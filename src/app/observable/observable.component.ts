@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { map, noop, Observable } from 'rxjs';
 import { createHttpObservable } from '../common/utils';
+import { CoursesService } from '../coursesService/courses.service';
+import { Course } from '../model/course';
 
 @Component({
   selector: 'app-observable',
@@ -8,21 +10,13 @@ import { createHttpObservable } from '../common/utils';
   styleUrls: ['./observable.component.scss'],
 })
 export class ObservableComponent implements OnInit {
-  constructor() {}
+  beginnerCourses$: Observable<Course[]>;
+  advancedCourses$: Observable<Course[]>;
 
-  ngOnInit(): void {
-    const http$ = createHttpObservable('http://localhost:9000/api/courses');
-
-    const courses$ = http$.pipe(
-      map((res: any) => {
-        return Object.values(res['payload']);
-      })
-    );
-
-    courses$.subscribe(
-      (courses) => console.log(courses),
-      noop,
-      () => console.log('completed')
-    );
+  constructor(private coursesService: CoursesService) {
+    this.beginnerCourses$ = this.coursesService.beginnerCourses$;
+    this.advancedCourses$ = this.coursesService.advancedCourses$;
   }
+
+  ngOnInit(): void {}
 }
