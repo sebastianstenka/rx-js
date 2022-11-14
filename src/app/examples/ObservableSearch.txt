@@ -1,11 +1,11 @@
 // debounceTime - if is has remainded unchanged for 400 milliseconds, then run
-
-import { debounceTime, distinctUntilChanged, fromEvent } from "rxjs";
+// switchMap - if observable not finished, and new stream is available, then current stream is finished and new is emmited
 
 fromEvent<any>(this.input.nativElement, "keyup")
   .pipe(
     map((event) => event.target.value),
     debounceTime(400), // to run after timeout
-    distinctUntilChanged() // to avoid duplicated values
+    distinctUntilChanged(), // to avoid duplicated values
+    switchMap(search => this.loadCourses(search))   // where this.loadCourses is observable
   )
   .subscribe(console.log);
