@@ -1,0 +1,7 @@
+    const http$ = createHttpObservable('http://localhost:9000/api/courses');
+
+    const sub = http$.subscribe(console.log);
+
+    sub.unsubscribe();
+
+    //when fetch not finished and unsubscribe, then cancel fetch
