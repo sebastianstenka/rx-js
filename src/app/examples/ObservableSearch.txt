@@ -1,0 +1,11 @@
+// debounceTime - if is has remainded unchanged for 400 milliseconds, then run
+
+import { debounceTime, distinctUntilChanged, fromEvent } from "rxjs";
+
+fromEvent<any>(this.input.nativElement, "keyup")
+  .pipe(
+    map((event) => event.target.value),
+    debounceTime(400), // to run after timeout
+    distinctUntilChanged() // to avoid duplicated values
+  )
+  .subscribe(console.log);
