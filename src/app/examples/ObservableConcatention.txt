@@ -1,0 +1,28 @@
+// Concat wait first to finish, and then start other source
+    
+    const source1$ = of(1, 2, 3);
+    const source2$ = of(4, 5, 6);
+    const source3$ = of(7, 8, 9);
+
+    const result$ = concat(source1$, source2$, source3$);
+
+    result$.subscribe(console.log);
+
+///////////////////////
+
+    this.form.valueChanges.pipe(
+      filter(() => this.form.valid),
+      concatMap(changes => this.saveCourse(changes))
+    )
+    .subscribe();
+
+    saveCourse(changes) {
+      return fromPromise(fetch('/api/courses/${this.course.id}'),
+      {
+        method: 'PUT',
+        body: JSON.stringify(changes),
+        headers: {
+          'content-type' : 'application/json';
+        }
+      });
+    }
