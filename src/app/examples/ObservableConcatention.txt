@@ -26,3 +26,10 @@
         }
       });
     }
+
+//////////// exhaustMap - like concat, But if more than one in the same time, the rest is ignored (save button clicked few times, catch only first click until finish http request)
+
+  fromEvent(this.saveButton.nativElement, 'click').pipe(
+    exhaustMap(() => this.saveCourse(this.form.value))
+  )
+  .subscribe();
