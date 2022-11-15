@@ -14,7 +14,7 @@ export class CoursesService {
     const http$ = createHttpObservable('http://localhost:9000/api/courses');
 
     const courses$: Observable<Course[]> = http$.pipe(
-      shareReplay(),
+      shareReplay(), // one http request for many filters/maps
       tap(() => console.log('HTTP invoked')),
       map((res: any) => Object.values(res['payload']))
     );
