@@ -22,5 +22,6 @@
       shareReplay(),
       tap(() => console.log('HTTP invoked')),
       map((res: any) => Object.values(res['payload'])),
-      catchError(err => of([]))
     );
+
+
