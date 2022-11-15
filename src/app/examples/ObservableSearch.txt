@@ -11,3 +11,12 @@ fromEvent<any>(this.input.nativElement, "keyup")
     switchMap(search => this.loadCourses(search))   // where this.loadCourses is observable
   )
   .subscribe(console.log);
+
+
+
+    //startWith - loadLessons on init invoke method with '' parameter
+    const courses$: Observable<Course[]> = http$.pipe(
+      map(event => event.target.value),
+      startWith(''),
+      switchMap(search => this.loadLessons(search))
+    );
