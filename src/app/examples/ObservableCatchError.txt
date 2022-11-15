@@ -6,3 +6,21 @@
       map((res: any) => Object.values(res['payload'])),
       catchError(err => of([]))
     );
+
+
+    //second way
+    const courses$: Observable<Course[]> = http$.pipe(
+      catchError(err => 
+      {
+        console.log('Error executed', err);
+        return throwError(err);
+      }),
+      finalize(()) => 
+      {
+        console.log('Finalize executed')
+      }),
+      shareReplay(),
+      tap(() => console.log('HTTP invoked')),
+      map((res: any) => Object.values(res['payload'])),
+      catchError(err => of([]))
+    );
