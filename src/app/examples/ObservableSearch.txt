@@ -1,4 +1,5 @@
 // debounceTime - if is has remainded unchanged for 400 milliseconds, then run
+// throttle(() => interval(500)) add first letter and wait 500 to new (during 500 all are ignored)
 // switchMap - if observable not finished, and new stream is available, then current stream is finished and new is emmited
 
 fromEvent<any>(this.input.nativElement, "keyup")
