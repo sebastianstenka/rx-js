@@ -25,3 +25,13 @@
     );
 
 
+    //retryWhen way
+    const courses$: Observable<Course[]> = http$.pipe(
+      shareReplay(),
+      tap(() => console.log('HTTP invoked')),
+      map((res: any) => Object.values(res['payload'])),
+      retryWhen(errors => errors.pipe(
+        deleyWhen(() => timer(2000))
+      ))
+    );
+
