@@ -1,0 +1,8 @@
+
+    //first way
+    const courses$: Observable<Course[]> = http$.pipe(
+      shareReplay(),
+      tap(() => console.log('HTTP invoked')),
+      map((res: any) => Object.values(res['payload'])),
+      catchError(err => of([]))
+    );
