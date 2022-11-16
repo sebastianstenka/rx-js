@@ -1,5 +1,5 @@
+import { error } from '@angular/compiler/src/util';
 import { Observable } from 'rxjs';
-import { Course } from '../model/course';
 
 export function createHttpObservable(url: string) {
   return new Observable((observer) => {
@@ -12,6 +12,7 @@ export function createHttpObservable(url: string) {
           return response.json();
         } else {
           observer.error('Request failed with status code: ' + response.status);
+          return response.json();
         }
       })
       .then((body) => {

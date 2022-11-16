@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { map, noop, Observable, shareReplay, tap } from 'rxjs';
+import { BehaviorSubject, map, noop, Observable, shareReplay, tap } from 'rxjs';
 import { createHttpObservable } from '../common/utils';
 import { Course } from '../model/course';
 
@@ -7,28 +7,28 @@ import { Course } from '../model/course';
   providedIn: 'root',
 })
 export class CoursesService {
-  beginnerCourses$: Observable<Course[]>;
-  advancedCourses$: Observable<Course[]>;
+  private subject = new BehaviorSubject<Course[]>([]);
+  courses$: Observable<Course[]> = this.subject.asObservable();
 
   constructor() {
     const http$ = createHttpObservable('http://localhost:9000/api/courses');
 
-    const courses$: Observable<Course[]> = http$.pipe(
-      shareReplay(), // one http request for many filters/maps
-      tap(() => console.log('HTTP invoked')),
-      map((res: any) => Object.values(res['payload']))
-    );
+    http$
+      .pipe(map((res: any) => Object.values(res['payload'])))
+      .subscribe((courses) => this.subject.next(courses as Course[]));
+  }
 
-    this.beginnerCourses$ = courses$.pipe(
-      map((courses: Course[]) =>
-        courses.filter((course: Course) => course.category === 'BEGINNER')
-      )
-    );
+  getBeginnerCourse() {
+    return this.filterByCategory('BEGINNER');
+  }
 
-    this.advancedCourses$ = courses$.pipe(
-      map((courses: Course[]) =>
-        courses.filter((course: Course) => course.category === 'ADVANCED')
-      )
+  getAdvancedCourse() {
+    return this.filterByCategory('ADVANCED');
+  }
+
+  filterByCategory(category: string) {
+    return this.courses$.pipe(
+      map((courses) => courses.filter((course) => course.category == category))
     );
   }
 }

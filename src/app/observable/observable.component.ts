@@ -14,8 +14,8 @@ export class ObservableComponent implements OnInit {
   advancedCourses$: Observable<Course[]>;
 
   constructor(private coursesService: CoursesService) {
-    this.beginnerCourses$ = this.coursesService.beginnerCourses$;
-    this.advancedCourses$ = this.coursesService.advancedCourses$;
+    this.beginnerCourses$ = this.coursesService.getBeginnerCourse();
+    this.advancedCourses$ = this.coursesService.getAdvancedCourse();
   }
 
   ngOnInit(): void {}
